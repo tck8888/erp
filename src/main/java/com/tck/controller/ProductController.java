@@ -1,12 +1,11 @@
 package com.tck.controller;
 
+import com.tck.base.BaseData;
 import com.tck.entity.Product;
 import com.tck.mapper.ProductMapper;
+import com.tck.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,10 +17,19 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductMapper productMapper;
+    private ProductService productService;
 
     @RequestMapping(value = "/findAll", method = RequestMethod.GET)
-    public List<Product> findAll(@RequestParam("userId") int userId) {
-        return productMapper.findProductByUserId(userId);
+    public BaseData<List<Product>> findAll(@RequestParam("userId") int userId) {
+        return productService.findProductByUserId(userId);
+    }
+
+    @RequestMapping(value = "/addProduct", method = RequestMethod.GET)
+    public BaseData<String> addProduct(@RequestParam("productName") String productName,
+                                @RequestParam("productPrice") Double productPrice,
+                                @RequestParam("productImage") String productImage,
+                                @RequestParam("remark") String remark,
+                                @RequestParam("userId") Integer userId) {
+        return productService.addProduct(productName,productPrice,productImage,remark,userId);
     }
 }

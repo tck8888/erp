@@ -9,15 +9,7 @@ public class Product {
     private Double productPrice;
     private String productImage;
     private String remark;
-    private int userId;
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -57,5 +49,25 @@ public class Product {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", productPrice=" + productPrice +
+                ", productImage='" + productImage + '\'' +
+                ", remark='" + remark + '\'' +
+                ", userId=" + userId +
+                '}';
     }
 }
