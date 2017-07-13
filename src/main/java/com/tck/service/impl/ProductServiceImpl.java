@@ -15,7 +15,7 @@ import java.util.List;
  * Created by tck on 2017/7/12.
  */
 @Service
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductMapper productMapper;

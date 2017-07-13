@@ -11,6 +11,10 @@ public enum StatusType {
     UPDATE_SUCCESS("更新成功"),
     SELECT_SUCCESS("查询成功"),
     SELECT_ERROR("查询失败"),
+    LOGIN_ERROR("查询失败"),
+    LOGIN_SUCCESS("登陆成功"),
+    REGISTER_ERROR("注册失败"),
+    REGISTER_SUCCESS("注册成功"),
     WEB_ERROR("服务器异常");
 
 
