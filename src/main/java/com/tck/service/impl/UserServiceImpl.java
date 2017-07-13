@@ -37,10 +37,15 @@ public class UserServiceImpl implements UserService, BaseService<User> {
     @Override
     public BaseData<String> register(String username, String password) {
         try {
-            if (userMapper.regisetr(username, password)) {
-                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.REGISTER_SUCCESS.getValue(), StatusType.REGISTER_SUCCESS.getValue());
+            User user = userMapper.findUserByUserName(username);
+            if (user == null) {
+                if (userMapper.regisetr(username, password)) {
+                    return getBaseData(StatusCode.SUCCESS_CODE, StatusType.REGISTER_SUCCESS.getValue(), StatusType.REGISTER_SUCCESS.getValue());
+                } else {
+                    return getBaseData(StatusCode.SUCCESS_CODE, StatusType.REGISTER_ERROR.getValue(), StatusType.REGISTER_ERROR.getValue());
+                }
             } else {
-                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.REGISTER_ERROR.getValue(), StatusType.REGISTER_ERROR.getValue());
+                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.REGISTER_ERROR.getValue(), StatusType.PHONE_ALREADY_EXISTENCE.getValue());
             }
         } catch (Exception e) {
             e.printStackTrace();

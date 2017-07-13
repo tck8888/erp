@@ -14,6 +14,7 @@ public enum StatusType {
     LOGIN_ERROR("查询失败"),
     LOGIN_SUCCESS("登陆成功"),
     REGISTER_ERROR("注册失败"),
+    PHONE_ALREADY_EXISTENCE("手机号已经存在"),
     REGISTER_SUCCESS("注册成功"),
     WEB_ERROR("服务器异常");
 
