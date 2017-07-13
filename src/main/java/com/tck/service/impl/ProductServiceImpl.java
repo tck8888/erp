@@ -35,6 +35,15 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * 更新操作
+     * @param productName
+     * @param productPrice
+     * @param productImage
+     * @param remark
+     * @param userId
+     * @return
+     */
     @Override
     public BaseData<String> updateProduct(String productName, Double productPrice, String productImage, String remark, Integer userId) {
         try {
