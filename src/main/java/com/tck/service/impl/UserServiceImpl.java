@@ -1,7 +1,6 @@
 package com.tck.service.impl;
 
 import com.tck.base.BaseData;
-import com.tck.base.BaseService;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
 import com.tck.entity.User;
@@ -16,14 +15,20 @@ import java.util.List;
  * Created by admin on 2017/7/13.
  */
 @Service
-public class UserServiceImpl implements UserService, BaseService<User> {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
 
+    /**
+     * 登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public BaseData<User> login(String username, String password) {
-
         User user = null;
         try {
             user = userMapper.login(username, password);
@@ -34,6 +39,13 @@ public class UserServiceImpl implements UserService, BaseService<User> {
         }
     }
 
+    /**
+     * 登录
+     *
+     * @param username
+     * @param password
+     * @return
+     */
     @Override
     public BaseData<String> register(String username, String password) {
         try {
@@ -53,8 +65,6 @@ public class UserServiceImpl implements UserService, BaseService<User> {
         }
     }
 
-
-    @Override
     public BaseData<String> getBaseData(int status, String message, String data) {
         BaseData<String> stringBaseData = new BaseData<String>();
         stringBaseData.setStatus(status);
@@ -63,17 +73,11 @@ public class UserServiceImpl implements UserService, BaseService<User> {
         return stringBaseData;
     }
 
-    @Override
     public BaseData<User> getBaseData(int status, String message, User data) {
         BaseData<User> stringBaseData = new BaseData<User>();
         stringBaseData.setStatus(status);
         stringBaseData.setMessgae(message);
         stringBaseData.setData(data);
         return stringBaseData;
-    }
-
-    @Override
-    public BaseData<List<User>> getBaseData(int status, String message, List<User> data) {
-        return null;
     }
 }
