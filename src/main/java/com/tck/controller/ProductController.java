@@ -42,4 +42,9 @@ public class ProductController {
         return productService.updateProduct(productName,productPrice,productImage,remark,userId);
     }
 
+    @RequestMapping(value = "/findProductById", method = RequestMethod.GET)
+    public BaseData<Product> findProductById(@RequestParam("id") Integer id) {
+        return productService.findProductById(id);
+    }
+
 }

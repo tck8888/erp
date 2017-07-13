@@ -1,5 +1,6 @@
 package com.tck.mapper;
 
+import com.tck.base.BaseData;
 import com.tck.entity.Product;
 import org.apache.ibatis.annotations.*;
 
@@ -48,4 +49,14 @@ public interface ProductMapper {
                           @Param("productImage") String productImage,
                           @Param("remark") String remark,
                           @Param("userId") Integer userId);
+
+    @Select("select * from tb_product where id = #{id}")
+    @Results({
+            @Result(property = "productName", column = "product_name"),
+            @Result(property = "productPrice", column = "product_price"),
+            @Result(property = "productImage", column = "product_image"),
+            @Result(property = "remark", column = "remark"),
+            @Result(property = "userId", column = "user_id"),
+    })
+    Product findProductById(@Param("id") Integer id);
 }

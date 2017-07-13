@@ -37,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 更新操作
+     *
      * @param productName
      * @param productPrice
      * @param productImage
@@ -67,6 +68,33 @@ public class ProductServiceImpl implements ProductService {
         return stringBaseData;
     }
 
+    /**
+     * 获取商品详情
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public BaseData<Product> findProductById(Integer id) {
+
+        Product product = null;
+        try {
+            product = productMapper.findProductById(id);
+            return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), product);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), product);
+        }
+    }
+
+    private BaseData<Product> getBaseData(int status, String message, Product product) {
+        BaseData<Product> productBaseData = new BaseData<>();
+        productBaseData.setStatus(status);
+        productBaseData.setMessgae(message);
+        productBaseData.setData(product);
+        return productBaseData;
+    }
+
 
     @Override
     public BaseData<List<Product>> findProductByUserId(int userId) {
@@ -76,7 +104,7 @@ public class ProductServiceImpl implements ProductService {
             return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), productByUserId);
         } catch (Exception e) {
             e.printStackTrace();
-            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), productByUserId);
+            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), productByUserId);
         }
     }
 
