@@ -13,4 +13,6 @@ public interface ProductService {
     BaseData<String> addProduct(String productName, Double productPrice, String productImage, String remark, Integer userId);
 
     BaseData<List<Product>> findProductByUserId(int userId);
+
+    BaseData<String> updateProduct(String productName, Double productPrice, String productImage, String remark, Integer userId);
 }

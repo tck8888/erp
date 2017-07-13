@@ -7,6 +7,8 @@ public enum StatusType {
 
     ADD_SUCCESS("新增成功"),
     ADD_ERROR("新增失败"),
+    UPDATE_ERROR("更新失败"),
+    UPDATE_SUCCESS("更新成功"),
     SELECT_SUCCESS("新增查询成功"),
     WEB_ERROR("服务器异常");
 

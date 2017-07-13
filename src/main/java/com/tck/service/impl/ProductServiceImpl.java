@@ -35,6 +35,21 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public BaseData<String> updateProduct(String productName, Double productPrice, String productImage, String remark, Integer userId) {
+        try {
+            Integer isSucess = productMapper.updateProduct(productName, productPrice, productImage, remark, userId);
+            if (isSucess > 0) {
+                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_SUCCESS.getValue(), StatusType.UPDATE_SUCCESS.getValue());
+            } else {
+                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.WEB_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
+        }
+    }
+
     private BaseData<String> getBaseData(int status, String message, String data) {
         BaseData<String> stringBaseData = new BaseData<String>();
         stringBaseData.setStatus(status);
@@ -42,6 +57,7 @@ public class ProductServiceImpl implements ProductService {
         stringBaseData.setData(data);
         return stringBaseData;
     }
+
 
     @Override
     public BaseData<List<Product>> findProductByUserId(int userId) {
@@ -62,4 +78,5 @@ public class ProductServiceImpl implements ProductService {
         stringBaseData.setData(data);
         return stringBaseData;
     }
+
 }

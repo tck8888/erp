@@ -32,4 +32,14 @@ public class ProductController {
                                 @RequestParam("userId") Integer userId) {
         return productService.addProduct(productName,productPrice,productImage,remark,userId);
     }
+
+    @RequestMapping(value = "/updateProduct", method = RequestMethod.GET)
+    public BaseData<String> updateProduct(@RequestParam("productName") String productName,
+                                       @RequestParam("productPrice") Double productPrice,
+                                       @RequestParam("productImage") String productImage,
+                                       @RequestParam("remark") String remark,
+                                       @RequestParam("userId") Integer userId) {
+        return productService.updateProduct(productName,productPrice,productImage,remark,userId);
+    }
+
 }
