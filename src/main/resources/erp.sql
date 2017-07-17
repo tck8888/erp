@@ -1,22 +1,22 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : tck
-Source Server Version : 50717
+Source Server         : localhost_3306
+Source Server Version : 50718
 Source Host           : localhost:3306
 Source Database       : erp
 
 Target Server Type    : MYSQL
-Target Server Version : 50717
+Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2017-07-17 19:11:01
+Date: 2017-07-17 23:53:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for tb_product
+-- Table structure for `tb_product`
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_product`;
 CREATE TABLE `tb_product` (
@@ -38,7 +38,7 @@ INSERT INTO `tb_product` VALUES ('1', '984', '888.00', '1122', '21jhj', '1');
 INSERT INTO `tb_product` VALUES ('2', 'rgfdg', '123.00', 'dsfdsfdsf', 'fdsfsdfsf', '2');
 
 -- ----------------------------
--- Table structure for tb_purchase_order
+-- Table structure for `tb_purchase_order`
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_purchase_order`;
 CREATE TABLE `tb_purchase_order` (
@@ -60,7 +60,7 @@ CREATE TABLE `tb_purchase_order` (
 INSERT INTO `tb_purchase_order` VALUES ('1', '1', '1', '100', 'fglkgdkllk666666');
 
 -- ----------------------------
--- Table structure for tb_user
+-- Table structure for `tb_user`
 -- ----------------------------
 DROP TABLE IF EXISTS `tb_user`;
 CREATE TABLE `tb_user` (
@@ -79,3 +79,22 @@ INSERT INTO `tb_user` VALUES ('1', '13776356351', 'qwe123', 'tck6666@163.com', '
 INSERT INTO `tb_user` VALUES ('2', '13776356352', 'qwe123', 'tck6666@163.com', '');
 INSERT INTO `tb_user` VALUES ('3', '13776356353', 'qwe123', '', '');
 INSERT INTO `tb_user` VALUES ('4', '13776356353', 'qwe123', '', '');
+
+-- ----------------------------
+-- Table structure for `tb_warehouse`
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_warehouse`;
+CREATE TABLE `tb_warehouse` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `productId` int(11) unsigned DEFAULT NULL,
+  `productCount` int(11) DEFAULT NULL,
+  `remark` varchar(255) DEFAULT '',
+  `productName` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `productId` (`productId`),
+  CONSTRAINT `tb_warehouse_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `tb_product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_warehouse
+-- ----------------------------
