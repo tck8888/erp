@@ -3,7 +3,6 @@ package com.tck.mapper;
 import com.tck.entity.User;
 import org.apache.ibatis.annotations.*;
 
-import java.util.List;
 
 /**
  * Created by admin on 2017/7/11.
