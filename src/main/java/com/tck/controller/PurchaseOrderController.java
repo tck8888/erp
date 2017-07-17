@@ -1,11 +1,14 @@
 package com.tck.controller;
 
 import com.tck.base.BaseData;
+import com.tck.entity.PurchaseOrder;
 import com.tck.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * Created by tck on 2017/7/13.
@@ -24,5 +27,25 @@ public class PurchaseOrderController {
                                      @RequestParam("remark") String remark) {
 
         return purchaseOrderService.addOrder(productId, userId, count, remark);
+    }
+
+    @RequestMapping("/findOrderByUserId")
+    public BaseData<List<PurchaseOrder>> findOrderByUserId(@RequestParam("userId") Integer userId) {
+
+        return purchaseOrderService.findOrderByUserId(userId);
+    }
+
+    @RequestMapping("/findOrderByProductId")
+    public BaseData<PurchaseOrder> findOrderByproductId(@RequestParam("productId") Integer productId) {
+
+        return purchaseOrderService.findOrderByproductId(productId);
+    }
+
+    @RequestMapping("/updateOrderByProductId")
+    public BaseData<String> updateOrderByProductId(@RequestParam("productId") Integer productId,
+                                                   @RequestParam("count") Integer count,
+                                                   @RequestParam("remark") String remark) {
+
+        return purchaseOrderService.updateOrderByProductId(productId, count, remark);
     }
 }

@@ -26,13 +26,13 @@ public class ProductServiceImpl implements ProductService {
         try {
             Boolean isSucess = productMapper.addProduct(productName, productPrice, productImage, remark, userId);
             if (isSucess) {
-                return BaseDataUtils.getInstance().getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
             } else {
-                return BaseDataUtils.getInstance().getBaseData(StatusCode.SUCCESS_CODE, StatusType.WEB_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.WEB_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return BaseDataUtils.getInstance().getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
         }
     }
 
@@ -51,13 +51,13 @@ public class ProductServiceImpl implements ProductService {
         try {
             Integer isSucess = productMapper.updateProduct(productName, productPrice, productImage, remark, userId);
             if (isSucess > 0) {
-                return BaseDataUtils.getInstance().getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_SUCCESS.getValue(), StatusType.UPDATE_SUCCESS.getValue());
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_SUCCESS.getValue(), StatusType.UPDATE_SUCCESS.getValue());
             } else {
-                return BaseDataUtils.getInstance().getBaseData(StatusCode.SUCCESS_CODE, StatusType.WEB_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return BaseDataUtils.getInstance().getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.UPDATE_ERROR.getValue());
         }
     }
 
@@ -73,21 +73,12 @@ public class ProductServiceImpl implements ProductService {
         Product product = null;
         try {
             product = productMapper.findProductById(id);
-            return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), product);
+            return  BaseDataUtils.getInstance().<Product>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), product);
         } catch (Exception e) {
             e.printStackTrace();
-            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), product);
+            return BaseDataUtils.getInstance().<Product>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), product);
         }
     }
-
-    private BaseData<Product> getBaseData(int status, String message, Product product) {
-        BaseData<Product> productBaseData = new BaseData<>();
-        productBaseData.setStatus(status);
-        productBaseData.setMessgae(message);
-        productBaseData.setData(product);
-        return productBaseData;
-    }
-
 
     @Override
     public BaseData<List<Product>> findProductByUserId(int userId) {

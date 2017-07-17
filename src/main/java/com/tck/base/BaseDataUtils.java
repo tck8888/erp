@@ -1,5 +1,7 @@
 package com.tck.base;
 
+import java.util.List;
+
 /**
  * Created by admin on 2017/7/17.
  */
@@ -21,11 +23,13 @@ public class BaseDataUtils {
         return singleton;
     }
 
-    public BaseData<String> getBaseData(int status, String message, String data) {
-        BaseData<String> stringBaseData = new BaseData<String>();
+    public <T> BaseData<T> getBaseData(int status, String message, T data) {
+        BaseData<T> stringBaseData = new BaseData<T>();
         stringBaseData.setStatus(status);
         stringBaseData.setMessgae(message);
         stringBaseData.setData(data);
         return stringBaseData;
     }
+
+
 }
