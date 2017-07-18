@@ -4,7 +4,6 @@ import com.tck.base.BaseData;
 import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
-import com.tck.entity.Product;
 import com.tck.entity.User;
 import com.tck.mapper.UserMapper;
 import com.tck.service.UserService;
