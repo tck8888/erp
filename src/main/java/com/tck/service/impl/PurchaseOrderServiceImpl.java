@@ -23,10 +23,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private PurchaseOrderMapper purchaseOrderMapper;
 
     @Override
-    public BaseData<String> addOrder(Integer productId, Integer userId, Integer count, String remark) {
+    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId,Integer count, String remark) {
 
         try {
-            Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, count, remark);
+            Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId,count, remark);
             if (isSuccess) {
                 return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
             } else {

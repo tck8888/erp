@@ -23,10 +23,11 @@ public class PurchaseOrderController {
     @RequestMapping("/addOrder")
     public BaseData<String> addOrder(@RequestParam("productId") Integer productId,
                                      @RequestParam("userId") Integer userId,
+                                     @RequestParam("warehouseId") Integer warehouseId,
                                      @RequestParam("count") Integer count,
                                      @RequestParam("remark") String remark) {
 
-        return purchaseOrderService.addOrder(productId, userId, count, remark);
+        return purchaseOrderService.addOrder(productId, userId, warehouseId,count, remark);
     }
 
     @RequestMapping("/findOrderByUserId")

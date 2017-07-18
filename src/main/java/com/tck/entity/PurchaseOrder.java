@@ -8,6 +8,7 @@ public class PurchaseOrder {
     private Integer id;
     private Integer userId;
     private Integer productId;
+    private Integer warehouseId;
     private Integer count;
     private String remark;
 
@@ -33,6 +34,14 @@ public class PurchaseOrder {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Integer getWarehouseId() {
+        return warehouseId;
+    }
+
+    public void setWarehouseId(Integer warehouseId) {
+        this.warehouseId = warehouseId;
     }
 
     public Integer getCount() {
