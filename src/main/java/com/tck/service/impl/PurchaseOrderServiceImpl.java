@@ -5,7 +5,9 @@ import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
 import com.tck.entity.Product;
+import com.tck.entity.ProductInWarehouseCount;
 import com.tck.entity.PurchaseOrder;
+import com.tck.mapper.ProductInWarehouseCountMapper;
 import com.tck.mapper.PurchaseOrderMapper;
 import com.tck.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +23,24 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     @Autowired
     private PurchaseOrderMapper purchaseOrderMapper;
+    @Autowired
+    private ProductInWarehouseCountMapper productInWarehouseCountMapper;
 
     @Override
-    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId,Integer count, String remark) {
+    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count, String remark) {
 
         try {
-            Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId,count, remark);
-            if (isSuccess) {
-                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+            ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
+            if (productInWarehouseCount == null) {
+                Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productId, warehouseId, count);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, remark);
+                if (isSuccess && isSave) {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+                } else {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+                }
             } else {
-                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+
             }
         } catch (Exception e) {
             e.printStackTrace();

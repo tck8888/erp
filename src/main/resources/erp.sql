@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2017-07-18 19:07:11
+Date: 2017-07-21 19:22:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -60,7 +60,7 @@ CREATE TABLE `tb_purchase_order` (
 -- ----------------------------
 -- Records of tb_purchase_order
 -- ----------------------------
-INSERT INTO `tb_purchase_order` VALUES ('2', null, '1', '156', '测试', '1');
+INSERT INTO `tb_purchase_order` VALUES ('2', '1', '1', '156', '测试', '1');
 INSERT INTO `tb_purchase_order` VALUES ('3', '1', '1', '156', '测试', '1');
 
 -- ----------------------------
@@ -101,19 +101,22 @@ CREATE TABLE `tb_warehouse` (
 INSERT INTO `tb_warehouse` VALUES ('1', '8888f88s', '123456');
 
 -- ----------------------------
--- Table structure for warehouse_product_count
+-- Table structure for tb_warehouse_product_count
 -- ----------------------------
-DROP TABLE IF EXISTS `warehouse_product_count`;
-CREATE TABLE `warehouse_product_count` (
+DROP TABLE IF EXISTS `tb_warehouse_product_count`;
+CREATE TABLE `tb_warehouse_product_count` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `productId` int(11) unsigned NOT NULL,
   `warehouseId` int(11) unsigned NOT NULL,
   `count` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `productId` (`productId`),
   KEY `warehouseId` (`warehouseId`),
-  CONSTRAINT `warehouse_product_count_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `tb_product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `warehouse_product_count_ibfk_2` FOREIGN KEY (`warehouseId`) REFERENCES `tb_warehouse` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `tb_warehouse_product_count_ibfk_1` FOREIGN KEY (`productId`) REFERENCES `tb_product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `tb_warehouse_product_count_ibfk_2` FOREIGN KEY (`warehouseId`) REFERENCES `tb_warehouse` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of warehouse_product_count
+-- Records of tb_warehouse_product_count
 -- ----------------------------
+INSERT INTO `tb_warehouse_product_count` VALUES ('1', '1', '1', '33');
