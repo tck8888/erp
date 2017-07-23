@@ -5,22 +5,26 @@ import com.tck.entity.User;
 
 import com.tck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
  * Created by admin on 2017/7/11.
  */
-@RestController
+@Controller
 @RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @RequestMapping(value = "/userLogin", method = RequestMethod.GET)
+    public String upload() {
+        return "/login";
+    }
     @RequestMapping("/login")
+    @ResponseBody
     public BaseData<User> login(@RequestParam("username") String username, @RequestParam("password") String password) {
 
         return userService.login(username, password);

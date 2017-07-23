@@ -30,6 +30,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count, String remark) {
 
         try {
+            /**
+             * 先判断tb_warehouse_product_count里面有没有当前productId和warehouseId
+             * 如果没有的话，就是新增一条记录
+             * 否则，在原有的记录上修改一下数量
+             */
             ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
             if (productInWarehouseCount == null) {
                 Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productId, warehouseId, count);
@@ -40,7 +45,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
                 }
             } else {
-
+                Integer integer = productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, count);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, remark);
+                if (integer > 0 && isSuccess) {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+                }else {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
