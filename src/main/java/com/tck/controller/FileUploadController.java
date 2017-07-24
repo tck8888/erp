@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  * 文件上传的Controller
- *F:\JavaWebStudy\erp\src\main\resources\templates\fileupload.html
+
  */
 @Controller
 public class FileUploadController {

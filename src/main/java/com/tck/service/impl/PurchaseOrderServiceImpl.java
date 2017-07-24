@@ -27,7 +27,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private ProductInWarehouseCountMapper productInWarehouseCountMapper;
 
     @Override
-    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count, String remark) {
+    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count,Double totalPrice, String remark) {
 
         try {
             /**
@@ -38,7 +38,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
             if (productInWarehouseCount == null) {
                 Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productId, warehouseId, count);
-                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, remark);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, totalPrice,remark);
                 if (isSuccess && isSave) {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
                 } else {
@@ -46,7 +46,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 }
             } else {
                 Integer integer = productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, count);
-                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, remark);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count,totalPrice, remark);
                 if (integer > 0 && isSuccess) {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
                 }else {

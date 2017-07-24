@@ -9,7 +9,7 @@ import java.util.List;
  * Created by tck on 2017/7/13.
  */
 public interface PurchaseOrderService {
-    BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId,Integer count,String remark);
+    BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId,Integer count,Double totalPrice,String remark);
 
     BaseData<List<PurchaseOrder>> findOrderByUserId(Integer userId);
 

@@ -11,6 +11,15 @@ public class PurchaseOrder {
     private Integer warehouseId;
     private Integer count;
     private String remark;
+    private Double totalPrice;
+
+    public Double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     public Integer getId() {
         return id;

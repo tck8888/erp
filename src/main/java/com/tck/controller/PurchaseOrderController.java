@@ -25,9 +25,10 @@ public class PurchaseOrderController {
                                      @RequestParam("userId") Integer userId,
                                      @RequestParam("warehouseId") Integer warehouseId,
                                      @RequestParam("count") Integer count,
+                                     @RequestParam("totalPrice") Double totalPrice,
                                      @RequestParam("remark") String remark) {
 
-        return purchaseOrderService.addOrder(productId, userId, warehouseId,count, remark);
+        return purchaseOrderService.addOrder(productId, userId, warehouseId,count,totalPrice, remark);
     }
 
     @RequestMapping("/findOrderByUserId")
