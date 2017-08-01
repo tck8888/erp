@@ -2,14 +2,14 @@ package com.tck.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.tck.common.ImageUploadUtils;
+import com.tck.base.BaseData;
+import com.tck.common.OSSClientUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +21,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Controller
 public class FileUploadController {
 
+    @Autowired
+    private OSSClientUtil ossClient ;
     // 访问路径为：http://ip:port/upload
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String upload() {
@@ -43,18 +45,9 @@ public class FileUploadController {
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseBody
-    public String upload(@RequestParam("file") MultipartFile file) {
-        if (!file.isEmpty()) {
-            try {
-                ImageUploadUtils.getInstance().upImage(String.valueOf(System.currentTimeMillis()), file.getInputStream());
-                return "上传成功";
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "上传失败," + e.getMessage();
-            }
-        } else {
-            return "上传失败，因为文件是空的.";
-        }
+    public BaseData<String> upload(@RequestParam("file") MultipartFile file) {
+
+       return ossClient.upImage(file);
     }
 
     /**

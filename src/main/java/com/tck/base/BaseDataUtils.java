@@ -1,6 +1,5 @@
 package com.tck.base;
 
-import java.util.List;
 
 /**
  * Created by admin on 2017/7/17.
