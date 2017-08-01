@@ -34,11 +34,18 @@ public class ImageUploadUtils {
         return singleton;
     }
 
+    /**
+     * http://www.cnblogs.com/baizhanshi/p/5593431.html
+     * @param fileName
+     * @param inputStream
+     */
     public void upImage(String fileName, InputStream inputStream) {
         OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         try {
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, "image/" + fileName, inputStream);
             ossClient.putObject(putObjectRequest);
+
+            //ossClient.generatePresignedUrl(bucketName,"image/",)
         } catch (OSSException oe) {
         } catch (ClientException ce) {
             System.out.println("Error Message: " + ce.getMessage());
