@@ -36,8 +36,8 @@ public class OSSClientUtil {
     public BaseData<String> upImage(MultipartFile file) {
         try {
             InputStream inputStream = file.getInputStream();
-           String filename =  String.valueOf(System.currentTimeMillis())+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
-            String success = upImage(filename,inputStream);
+            String filename = file.getOriginalFilename();
+            String success = upImage(filename, inputStream);
             if (success.equals("")) {
                 return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "上传图片失败", "");
             } else {
@@ -45,11 +45,11 @@ public class OSSClientUtil {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "上传图片失败", "");
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "获取图片失败", "");
         }
     }
 
-    private String upImage(String fileName,InputStream inputStream) {
+    private String upImage(String fileName, InputStream inputStream) {
 
         String str = "";
         try {
@@ -57,7 +57,9 @@ public class OSSClientUtil {
             PutObjectResult putObjectResult = ossClient.putObject(putObjectRequest);
             str = putObjectResult.getETag();
         } catch (OSSException oe) {
+            str = oe.getMessage();
         } catch (ClientException ce) {
+            str = ce.getMessage();
         } finally {
             if (inputStream != null) {
                 try {
