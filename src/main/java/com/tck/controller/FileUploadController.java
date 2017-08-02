@@ -23,6 +23,7 @@ public class FileUploadController {
 
     @Autowired
     private OSSClientUtil ossClient ;
+
     // 访问路径为：http://ip:port/upload
     @RequestMapping(value = "/upload", method = RequestMethod.GET)
     public String upload() {
