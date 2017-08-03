@@ -36,8 +36,9 @@ public interface ProductMapper {
                        @Param("remark") String remark,
                        @Param("userId") Integer userId);
 
-    @Update("update tb_product set product_name=#{productName},product_price=#{productPrice},product_image=#{productImage},remark=#{remark} where user_id = #{userId}")
+    @Update("update tb_product set product_name=#{productName},product_price=#{productPrice},product_image=#{productImage},remark=#{remark} where id = #{id}")
     @Results({
+            @Result(property = "id", column = "id"),
             @Result(property = "productName", column = "product_name"),
             @Result(property = "productPrice", column = "product_price"),
             @Result(property = "productImage", column = "product_image"),
@@ -48,10 +49,11 @@ public interface ProductMapper {
                           @Param("productPrice") Double productPrice,
                           @Param("productImage") String productImage,
                           @Param("remark") String remark,
-                          @Param("userId") Integer userId);
+                          @Param("id") Integer productId);
 
     @Select("select * from tb_product where id = #{id}")
     @Results({
+            @Result(property = "id", column = "id"),
             @Result(property = "productName", column = "product_name"),
             @Result(property = "productPrice", column = "product_price"),
             @Result(property = "productImage", column = "product_image"),

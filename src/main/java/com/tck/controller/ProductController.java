@@ -38,8 +38,8 @@ public class ProductController {
                                        @RequestParam("productPrice") Double productPrice,
                                        @RequestParam("productImage") String productImage,
                                        @RequestParam("remark") String remark,
-                                       @RequestParam("userId") Integer userId) {
-        return productService.updateProduct(productName,productPrice,productImage,remark,userId);
+                                       @RequestParam("productId") Integer productId) {
+        return productService.updateProduct(productName,productPrice,productImage,remark,productId);
     }
 
     @RequestMapping(value = "/findProductById", method = RequestMethod.GET)

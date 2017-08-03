@@ -43,13 +43,13 @@ public class ProductServiceImpl implements ProductService {
      * @param productPrice
      * @param productImage
      * @param remark
-     * @param userId
+     * @param productId
      * @return
      */
     @Override
-    public BaseData<String> updateProduct(String productName, Double productPrice, String productImage, String remark, Integer userId) {
+    public BaseData<String> updateProduct(String productName, Double productPrice, String productImage, String remark, Integer productId) {
         try {
-            Integer isSucess = productMapper.updateProduct(productName, productPrice, productImage, remark, userId);
+            Integer isSucess = productMapper.updateProduct(productName, productPrice, productImage, remark, productId);
             if (isSucess > 0) {
                 return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_SUCCESS.getValue(), StatusType.UPDATE_SUCCESS.getValue());
             } else {
