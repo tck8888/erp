@@ -8,6 +8,7 @@ public class Warehouse {
     private Integer id;
     private String productName;
     private String remark;
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -31,5 +32,13 @@ public class Warehouse {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

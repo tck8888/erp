@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by tck on 2017/7/17.
  */
@@ -18,14 +20,22 @@ public class WarehouseController {
     @Autowired
     private WarehouseService warehouseService;
 
-    @RequestMapping("/addWarehouse")
+    @RequestMapping(value = "/addWarehouse")
     public BaseData<String> addWarehouse(@RequestParam("productName") String productName,
-                                         @RequestParam("remark") String remark) {
-        return warehouseService.addWarehouse(productName, remark);
+                                         @RequestParam("remark") String remark,
+                                         @RequestParam("userId") Integer userId) {
+        return warehouseService.addWarehouse(productName, remark,userId);
     }
 
-    @RequestMapping("/findWarehouseByWarehouseId")
+    @RequestMapping(value = "/findWarehouseByWarehouseId")
     public BaseData<Warehouse> findWarehouseByWarehouseId(@RequestParam("warehouseId") Integer warehouseId) {
         return warehouseService.findWarehouseByWarehouseId(warehouseId);
     }
+
+    @RequestMapping(value = "/getWarehouseList")
+    public BaseData<List<Warehouse>> getWarehouseList(@RequestParam("userId") Integer userId){
+
+        return warehouseService.getWarehouseList(userId);
+    }
+
 }

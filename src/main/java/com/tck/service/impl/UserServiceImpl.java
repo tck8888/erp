@@ -32,10 +32,14 @@ public class UserServiceImpl implements UserService {
         User user = null;
         try {
             user = userMapper.login(username, password);
-            return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.SUCCESS_CODE, StatusType.LOGIN_SUCCESS.getValue(), user);
+            if (user == null) {
+                return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.SUCCESS_CODE, StatusType.LOGIN_ERROR.getValue(), user);
+            } else {
+                return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.SUCCESS_CODE, StatusType.LOGIN_SUCCESS.getValue(), user);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.LOGIN_ERROR.getValue(), user);
+            return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), user);
         }
     }
 

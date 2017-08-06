@@ -10,6 +10,8 @@ import com.tck.service.WarehouseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by tck on 2017/7/17.
  */
@@ -20,10 +22,10 @@ public class WarehouseServiceImpl implements WarehouseService {
     private WarehouseMapper warehouseMapper;
 
     @Override
-    public BaseData<String> addWarehouse(String productName, String remark) {
+    public BaseData<String> addWarehouse(String productName, String remark, Integer userId) {
 
         try {
-            Boolean isSuccess = warehouseMapper.addWarehouse(productName, remark);
+            Boolean isSuccess = warehouseMapper.addWarehouse(productName, remark, userId);
             if (isSuccess) {
                 return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
             } else {
@@ -45,5 +47,29 @@ public class WarehouseServiceImpl implements WarehouseService {
             e.printStackTrace();
             return BaseDataUtils.getInstance().<Warehouse>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), warehouse);
         }
+    }
+
+    @Override
+    public BaseData<List<Warehouse>> getWarehouseList(Integer userId) {
+        List<Warehouse> warehouseList = null;
+        try {
+            warehouseList = warehouseMapper.getWarehouseList(userId);
+            if (warehouseList == null) {
+                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_WAREHOUSE_NO_DATA.getValue(), warehouseList);
+            } else {
+                return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), warehouseList);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), warehouseList);
+        }
+    }
+
+    private BaseData<List<Warehouse>> getBaseData(int status, String message, List<Warehouse> data) {
+        BaseData<List<Warehouse>> stringBaseData = new BaseData<List<Warehouse>>();
+        stringBaseData.setStatus(status);
+        stringBaseData.setMessgae(message);
+        stringBaseData.setData(data);
+        return stringBaseData;
     }
 }
