@@ -12,4 +12,6 @@ public interface AccountService {
     BaseData<String> addAccount(String accountName, String remark, Integer userId);
 
     BaseData<List<AccountBean>> getAccountList(Integer userId);
+
+    BaseData<AccountBean> findAccountById(Integer accountId);
 }

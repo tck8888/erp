@@ -25,11 +25,18 @@ public class AccountController {
                                        @RequestParam("remark") String remark,
                                        @RequestParam("userId") Integer userId) {
 
-        return accountService.addAccount(accountName,remark,userId);
+        return accountService.addAccount(accountName, remark, userId);
     }
+
     @RequestMapping("/getAccountList")
     public BaseData<List<AccountBean>> getAccountList(@RequestParam("userId") Integer userId) {
 
         return accountService.getAccountList(userId);
+    }
+
+    @RequestMapping("/findAccountById")
+    public BaseData<AccountBean> findAccountById(@RequestParam("accountId") Integer accountId) {
+
+        return accountService.findAccountById(accountId);
     }
 }

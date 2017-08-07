@@ -5,6 +5,7 @@ import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
 import com.tck.entity.AccountBean;
+import com.tck.entity.Product;
 import com.tck.entity.Warehouse;
 import com.tck.mapper.AccountMapper;
 import com.tck.service.AccountService;
@@ -50,6 +51,22 @@ public class AccountServiceImpl implements AccountService {
         } catch (Exception e) {
             e.printStackTrace();
             return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), accountBeanList);
+        }
+    }
+
+    @Override
+    public BaseData<AccountBean> findAccountById(Integer accountId) {
+        AccountBean accountBean = null;
+        try {
+            accountBean = accountMapper.findAccountById(accountId);
+            if (accountBean == null) {
+                return BaseDataUtils.getInstance().<AccountBean>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ACCOUNT_NO_DATA.getValue(), accountBean);
+            } else {
+                return BaseDataUtils.getInstance().<AccountBean>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), accountBean);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseDataUtils.getInstance().<AccountBean>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), accountBean);
         }
     }
 

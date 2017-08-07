@@ -17,6 +17,7 @@ public enum StatusType {
     REGISTER_ERROR("注册失败"),
     PHONE_ALREADY_EXISTENCE("手机号已经存在"),
     REGISTER_SUCCESS("注册成功"),
+    ACCOUNT_NO_DATA("暂无当前账户"),
     WEB_ERROR("服务器异常");
 
 

@@ -29,4 +29,13 @@ public interface AccountMapper {
             @Result(property = "userId", column = "userId")
     })
     List<AccountBean> getAccountList(@Param("userId") Integer userId);
+
+    @Select("select * from tb_account where id = #{accountId}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "accountName", column = "accountName"),
+            @Result(property = "remark", column = "remark"),
+            @Result(property = "userId", column = "userId")
+    })
+    AccountBean findAccountById(@Param("accountId") Integer accountId);
 }
