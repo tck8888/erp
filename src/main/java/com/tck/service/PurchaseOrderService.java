@@ -16,4 +16,9 @@ public interface PurchaseOrderService {
     BaseData<PurchaseOrder> findOrderByproductId(Integer productId);
 
     BaseData<String> updateOrderByProductId(Integer id, Integer productId, String remark);
+
+    BaseData<String> addOrder(Integer userId, Integer warehouseId, String warehouseName,
+                              Integer accountId, String accountName, Integer totalCount,
+                              Double totalPrice, String productId, String productCount,
+                              String date, String remark);
 }

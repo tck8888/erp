@@ -27,7 +27,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private ProductInWarehouseCountMapper productInWarehouseCountMapper;
 
     @Override
-    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count,Double totalPrice, String remark) {
+    public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count, Double totalPrice, String remark) {
 
         try {
             /**
@@ -38,7 +38,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
             if (productInWarehouseCount == null) {
                 Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productId, warehouseId, count);
-                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, totalPrice,remark);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, totalPrice, remark);
                 if (isSuccess && isSave) {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
                 } else {
@@ -46,10 +46,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 }
             } else {
                 Integer integer = productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, count);
-                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count,totalPrice, remark);
+                Boolean isSuccess = purchaseOrderMapper.addOrder(productId, userId, warehouseId, count, totalPrice, remark);
                 if (integer > 0 && isSuccess) {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
-                }else {
+                } else {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
                 }
             }
@@ -110,5 +110,78 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         }
     }
 
+    @Override
+    public BaseData<String> addOrder(Integer userId, Integer warehouseId, String warehouseName,
+                                     Integer accountId, String accountName, Integer totalCount,
+                                     Double totalPrice, String productId, String productCount,
+                                     String date, String remark) {
+        /**
+         * 先判断tb_warehouse_product_count里面有没有当前productId和warehouseId
+         * 如果没有的话，就是新增一条记录
+         * 否则，在原有的记录上修改一下数量
+         */
+        StringBuilder sb = new StringBuilder();
+        if (productId.indexOf(",") == -1) {
+            sb.append(saveProductToWarehouse(Integer.parseInt(productId), Integer.parseInt(productCount), warehouseId));
+        } else {
+            String[] productIds = productId.split(",");
+            String[] productCounts = productCount.split(",");
+
+            for (int i = 0; i < productIds.length; i++) {
+                int id = Integer.parseInt(productIds[i]);
+                int count = Integer.parseInt(productCounts[i]);
+                if (i == productIds.length - 1) {
+                    sb.append(saveProductToWarehouse(id, count, warehouseId));
+                } else {
+                    sb.append(saveProductToWarehouse(id, count, warehouseId) + ",");
+                }
+            }
+        }
+
+        if (sb.toString().contains("保存失败") || sb.toString().contains("更新失败")) {
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+        } else {
+            try {
+                Boolean isSuccess = purchaseOrderMapper.addOrder(userId, warehouseId, warehouseName,
+                        accountId, accountName, totalCount,
+                        totalPrice, productId, productCount,
+                        date, remark);
+                if (isSuccess) {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
+                } else {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.WEB_ERROR.getValue());
+            }
+        }
+    }
+
+    public String saveProductToWarehouse(int productId, int productCount, int warehouseId) {
+        try {
+            ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
+            if (productInWarehouseCount == null) {
+                //没有查到,保存
+                Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productCount, warehouseId, productCount);
+                if (isSave) {
+                    return "保存成功";
+                } else {
+                    return "保存失败";
+                }
+            } else {
+                //查到当前数据库有记录，则更新数据
+                Integer integer = productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, productCount);
+                if (integer > 0) {
+                    return "更新成功";
+                } else {
+                    return "更新失败";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "数据异常";
+        }
+    }
 
 }

@@ -20,7 +20,7 @@ public class PurchaseOrderController {
     @Autowired
     private PurchaseOrderService purchaseOrderService;
 
-    /*
+   /* *//*
     *    private int userId;
     private int accountId;
     private int warehouseId;
@@ -29,7 +29,7 @@ public class PurchaseOrderController {
     private String productId;
     private String productCount;
     private String date;
-    private String remark;*/
+    private String remark;*//*
     @RequestMapping("/addOrder")
     public BaseData<String> addOrder(@RequestParam("productId") Integer productId,
                                      @RequestParam("userId") Integer userId,
@@ -39,6 +39,35 @@ public class PurchaseOrderController {
                                      @RequestParam("remark") String remark) {
 
         return purchaseOrderService.addOrder(productId, userId, warehouseId,count,totalPrice, remark);
+    }*/
+
+    /*
+  *    private int userId;
+  private int accountId;
+  private int warehouseId;
+  private int totalCount;
+  private double totalprice;
+  private String productId;
+  private String productCount;
+  private String date;
+  private String remark;*/
+    @RequestMapping("/addOrder")
+    public BaseData<String> addOrder(@RequestParam("userId") Integer userId,
+                                     @RequestParam("warehouseId") Integer warehouseId,
+                                     @RequestParam("warehouseName") String warehouseName,
+                                     @RequestParam("accountId") Integer accountId,
+                                     @RequestParam("accountName") String accountName,
+                                     @RequestParam("totalCount") Integer totalCount,
+                                     @RequestParam("totalPrice") Double totalPrice,
+                                     @RequestParam("productId") String productId,
+                                     @RequestParam("productCount") String productCount,
+                                     @RequestParam("date") String date,
+                                     @RequestParam("remark") String remark) {
+
+        return purchaseOrderService.addOrder(userId, warehouseId, warehouseName,
+                accountId, accountName, totalCount,
+                totalPrice, productId, productCount,
+                date, remark);
     }
 
     @RequestMapping("/findOrderByUserId")
