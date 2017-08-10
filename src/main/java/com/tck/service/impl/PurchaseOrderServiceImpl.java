@@ -124,77 +124,97 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
          * 如果没有的话，就是新增一条记录
          * 否则，在原有的记录上修改一下数量
          */
-        StringBuilder sb = new StringBuilder();
+        boolean isSuccess = false;
         if (productId.indexOf(",") == -1) {
-            sb.append(saveProductToWarehouse(Integer.parseInt(productId), Integer.parseInt(productCount), warehouseId));
+            isSuccess = saveProductToWarehouse(Integer.parseInt(productId), Integer.parseInt(productCount), warehouseId);
         } else {
             String[] productIds = productId.split(",");
             String[] productCounts = productCount.split(",");
-
             for (int i = 0; i < productIds.length; i++) {
                 int id = Integer.parseInt(productIds[i]);
                 int count = Integer.parseInt(productCounts[i]);
-                if (i == productIds.length - 1) {
-                    sb.append(saveProductToWarehouse(id, count, warehouseId));
-                } else {
-                    sb.append(saveProductToWarehouse(id, count, warehouseId) + ",");
+                isSuccess = saveProductToWarehouse(id, count, warehouseId);
+                if (!isSuccess) {
+                    break;
                 }
             }
         }
 
-        /**
-         * 采购修改账户余额
-         */
-        Boolean aBoolean = accountMapper.updateAccountBalance(accountId, -totalPrice);
-        if (aBoolean) {
-
-        } else {
-
-        }
-
-        if (sb.toString().contains("保存失败") || sb.toString().contains("更新失败")) {
-            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
-        } else {
-            try {
-                Boolean isSuccess = purchaseOrderMapper.addOrder(userId, warehouseId, warehouseName,
+        if (isSuccess) {
+            /**
+             * 采购修改账户余额
+             */
+            Boolean isAccountBalanceSuccuss = updateAccountMoney(accountId, -totalPrice);
+            if (isAccountBalanceSuccuss) {
+                Boolean isPurchaseOrderAddSuccess = isAddPurchaseSuccess(userId, warehouseId, warehouseName,
                         accountId, accountName, totalCount,
                         totalPrice, productId, productCount,
                         date, remark);
-                if (isSuccess) {
+                if (isPurchaseOrderAddSuccess) {
                     return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_SUCCESS.getValue(), StatusType.ADD_SUCCESS.getValue());
                 } else {
-                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.ADD_ERROR.getValue(), StatusType.ADD_ERROR.getValue());
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "新增采购单失败", StatusType.ADD_ERROR.getValue());
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), StatusType.WEB_ERROR.getValue());
+            } else {
+                return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "修改账户余额失败", StatusType.ADD_ERROR.getValue());
             }
+        } else {
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "保存商品到库存失败", StatusType.ADD_ERROR.getValue());
         }
     }
 
-    public String saveProductToWarehouse(int productId, int productCount, int warehouseId) {
+    public boolean isAddPurchaseSuccess(Integer userId, Integer warehouseId, String warehouseName,
+                                        Integer accountId, String accountName, Integer totalCount,
+                                        Double totalPrice, String productId, String productCount,
+                                        String date, String remark) {
+        try {
+            return purchaseOrderMapper.addOrder(userId, warehouseId, warehouseName,
+                    accountId, accountName, totalCount,
+                    totalPrice, productId, productCount,
+                    date, remark);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 更新账户余额
+     *
+     * @param acccountId
+     * @param price
+     * @return
+     */
+    public boolean updateAccountMoney(int acccountId, double price) {
+        try {
+            return accountMapper.updateAccountBalance(acccountId, -price);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 保存商品到仓库
+     *
+     * @param productId
+     * @param productCount
+     * @param warehouseId
+     * @return
+     */
+    public boolean saveProductToWarehouse(int productId, int productCount, int warehouseId) {
         try {
             ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
             if (productInWarehouseCount == null) {
                 //没有查到,保存
-                Boolean isSave = productInWarehouseCountMapper.addProductInWarehouseCount(productCount, warehouseId, productCount);
-                if (isSave) {
-                    return "保存成功";
-                } else {
-                    return "保存失败";
-                }
+                return productInWarehouseCountMapper.addProductInWarehouseCount(productCount, warehouseId, productCount);
             } else {
                 //查到当前数据库有记录，则更新数据
-                Integer integer = productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, productCount);
-                if (integer > 0) {
-                    return "更新成功";
-                } else {
-                    return "更新失败";
-                }
+                return productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, productCount) > 0 ? true : false;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "数据异常";
+            return false;
         }
     }
 
