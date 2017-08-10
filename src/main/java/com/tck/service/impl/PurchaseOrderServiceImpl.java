@@ -7,6 +7,7 @@ import com.tck.base.StatusType;
 import com.tck.entity.Product;
 import com.tck.entity.ProductInWarehouseCount;
 import com.tck.entity.PurchaseOrder;
+import com.tck.mapper.AccountMapper;
 import com.tck.mapper.ProductInWarehouseCountMapper;
 import com.tck.mapper.PurchaseOrderMapper;
 import com.tck.service.PurchaseOrderService;
@@ -25,6 +26,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private PurchaseOrderMapper purchaseOrderMapper;
     @Autowired
     private ProductInWarehouseCountMapper productInWarehouseCountMapper;
+    @Autowired
+    private AccountMapper accountMapper;
+
 
     @Override
     public BaseData<String> addOrder(Integer productId, Integer userId, Integer warehouseId, Integer count, Double totalPrice, String remark) {
@@ -136,6 +140,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     sb.append(saveProductToWarehouse(id, count, warehouseId) + ",");
                 }
             }
+        }
+
+        /**
+         * 采购修改账户余额
+         */
+        Boolean aBoolean = accountMapper.updateAccountBalance(accountId, -totalPrice);
+        if (aBoolean) {
+
+        } else {
+
         }
 
         if (sb.toString().contains("保存失败") || sb.toString().contains("更新失败")) {

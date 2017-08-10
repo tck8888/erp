@@ -8,6 +8,7 @@ public class AccountBean {
     private String accountName;
     private String remark;
     private Integer userId;
+    private Double balance;
 
     public Integer getId() {
         return id;
@@ -39,5 +40,13 @@ public class AccountBean {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Double balance) {
+        this.balance = balance;
     }
 }
