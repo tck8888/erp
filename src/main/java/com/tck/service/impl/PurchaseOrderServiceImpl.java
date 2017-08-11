@@ -13,6 +13,7 @@ import com.tck.mapper.PurchaseOrderMapper;
 import com.tck.service.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -114,6 +115,8 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         }
     }
 
+
+    @Transactional
     @Override
     public BaseData<String> addOrder(Integer userId, Integer warehouseId, String warehouseName,
                                      Integer accountId, String accountName, Integer totalCount,
