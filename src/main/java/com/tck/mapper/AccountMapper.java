@@ -43,9 +43,8 @@ public interface AccountMapper {
     })
     AccountBean findAccountById(@Param("accountId") Integer accountId);
 
-    /*    @Update("update tb_warehouse_product_count set count =count +#{count} where productId =#{warehouseId} and productId =#{warehouseId}")
-*/
-    @Update("update  from tb_account set balance = balance + #{totalPrice} where id = #{accountId}")
+
+    @Update("update  tb_account set balance = balance - #{totalPrice} where id = #{accountId}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "accountName", column = "accountName"),
