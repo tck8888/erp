@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 /**
  * Created by admin on 2017/7/11.
  */
+@Mapper
 public interface UserMapper {
 
 

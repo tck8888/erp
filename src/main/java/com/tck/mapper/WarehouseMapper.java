@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by tck on 2017/7/17.
  */
+@Mapper
 public interface WarehouseMapper {
 
     @Insert("insert into tb_warehouse(productName,remark,user_id) values(#{productName},#{remark},#{userId})")

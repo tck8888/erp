@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 /**
  * Created by admin on 2017/7/21.
  */
+@Mapper
 public interface ProductInWarehouseCountMapper {
 
     @Insert("insert tb_warehouse_product_count(productId,warehouseId,count) values (#{productId},#{warehouseId},#{count})")

@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by admin on 2017/7/11.
  */
+@Mapper
 public interface ProductMapper {
 
     @Select("select * from tb_product where user_id = #{userId}")

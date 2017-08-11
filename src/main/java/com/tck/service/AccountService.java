@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by tck on 2017/8/6.
  */
+
 public interface AccountService {
     BaseData<String> addAccount(String accountName, String remark, Integer userId);
 

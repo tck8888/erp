@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Created by tck on 2017/8/6.
  */
+@Mapper
 public interface AccountMapper {
 
     @Insert("insert into tb_account(accountName,remark,userId) values(#{accountName},#{remark},#{userId})")

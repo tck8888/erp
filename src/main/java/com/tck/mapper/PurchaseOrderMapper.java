@@ -8,23 +8,8 @@ import java.util.List;
 /**
  * Created by tck on 2017/7/13.
  */
+@Mapper
 public interface PurchaseOrderMapper {
-
-    @Insert("insert into tb_purchase_order(user_id,product_id,warehouse_id,count,remark) values (#{userId},#{productId},#{warehouseId},#{count},#{remark})")
-    @Results({
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "productId", column = "product_id"),
-            @Result(property = "warehouseId", column = "warehouse_id"),
-            @Result(property = "count", column = "count"),
-            @Result(property = "totalPrice", column = "total_price"),
-            @Result(property = "remark", column = "remark")
-    })
-    Boolean addOrder(@Param("productId") Integer productId,
-                     @Param("userId") Integer userId,
-                     @Param("warehouseId") Integer warehouseId,
-                     @Param("count") Integer count,
-                     @Param("totalPrice") Double totalPrice,
-                     @Param("remark") String remark);
 
     @Select("select * from tb_purchase_order where user_id = #{userId}")
     @Results({
