@@ -15,8 +15,8 @@ public interface AccountMapper {
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "accountName", column = "accountName"),
-            @Result(property = "remark", column = "remark"),
             @Result(property = "balance", column = "balance"),
+            @Result(property = "remark", column = "remark"),
             @Result(property = "userId", column = "userId")
     })
     Boolean addAccount(@Param("accountName") String accountName,
@@ -44,7 +44,7 @@ public interface AccountMapper {
     AccountBean findAccountById(@Param("accountId") Integer accountId);
 
 
-    @Update("update  tb_account set balance = balance - #{totalPrice} where id = #{accountId}")
+    @Update("update  tb_account set balance = #{totalPrice} where id = #{accountId}")
     @Results({
             @Result(property = "id", column = "id"),
             @Result(property = "accountName", column = "accountName"),
@@ -54,4 +54,5 @@ public interface AccountMapper {
     })
     Boolean updateAccountBalance(@Param("accountId") Integer accountId,
                                  @Param("totalPrice") Double totalPrice);
+
 }

@@ -4,6 +4,7 @@ import com.tck.base.BaseData;
 import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
+import com.tck.entity.AccountBean;
 import com.tck.entity.Product;
 import com.tck.entity.ProductInWarehouseCount;
 import com.tck.entity.PurchaseOrder;
@@ -156,8 +157,31 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
      * @return
      */
     public boolean updateAccountMoney(int acccountId, double price) {
+
+        AccountBean account = null;
         try {
-            return accountMapper.updateAccountBalance(acccountId, -price);
+            account = accountMapper.findAccountById(acccountId);
+            if (account == null) {
+                return false;
+            } else {
+                return updateAccountMoney(account, price);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 更新账户余额
+     *
+     * @param account
+     * @param price
+     * @return
+     */
+    public boolean updateAccountMoney(AccountBean account, double price) {
+        try {
+            return accountMapper.updateAccountBalance(account.getId(), price);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
