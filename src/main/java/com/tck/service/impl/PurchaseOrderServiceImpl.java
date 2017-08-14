@@ -150,7 +150,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     /**
-     * 更新账户余额
+     * 更新账户余额===1
      *
      * @param acccountId
      * @param price
@@ -173,7 +173,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     /**
-     * 更新账户余额
+     * 更新账户余额===2
      *
      * @param account
      * @param price
@@ -181,7 +181,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
      */
     public boolean updateAccountMoney(AccountBean account, double price) {
         try {
-            return accountMapper.updateAccountBalance(account.getId(), price);
+            return accountMapper.updateAccountBalance(account.getId(), account.getBalance() - price);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
