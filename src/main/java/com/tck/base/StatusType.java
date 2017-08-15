@@ -11,6 +11,7 @@ public enum StatusType {
     UPDATE_SUCCESS("更新成功"),
     SELECT_SUCCESS("查询成功"),
     SELECT_WAREHOUSE_NO_DATA("暂无仓库数据"),
+    SELECT_CONSUME_NO_DATA("暂无消费记录"),
     SELECT_ERROR("查询失败"),
     LOGIN_ERROR("手机或者密码错误"),
     LOGIN_SUCCESS("登陆成功"),

@@ -9,6 +9,7 @@ import com.tck.entity.Product;
 import com.tck.entity.ProductInWarehouseCount;
 import com.tck.entity.PurchaseOrder;
 import com.tck.mapper.AccountMapper;
+import com.tck.mapper.ConsumeRecordMapper;
 import com.tck.mapper.ProductInWarehouseCountMapper;
 import com.tck.mapper.PurchaseOrderMapper;
 import com.tck.service.PurchaseOrderService;
@@ -30,6 +31,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     private ProductInWarehouseCountMapper productInWarehouseCountMapper;
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private ConsumeRecordMapper consumeRecordMapper;
 
 
     @Override
