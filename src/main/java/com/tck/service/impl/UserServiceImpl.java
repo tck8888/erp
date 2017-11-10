@@ -69,4 +69,44 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public BaseData<String> update(int userId, String name, String type) {
+        try {
+            if (type.equals("nickname")) {
+                if (userMapper.updateUserNickName(userId, name) > 0) {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, "修改成功", "修改成功");
+                } else {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, "修改失败", "修改失败");
+                }
+            }
+            if (type.equals("email")) {
+                if (userMapper.updateUserEmail(userId, name) > 0) {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, "修改成功", "修改成功");
+                } else {
+                    return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, "修改失败", "修改失败");
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.WEB_ERROR_CODE, "修改失败", "修改失败");
+        }
+    }
+
+    @Override
+    public BaseData<User> findUserById(Integer userId) {
+        User user = null;
+        try {
+            user = userMapper.findUserById(userId);
+            if (user == null) {
+                return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.SUCCESS_CODE, StatusType.LOGIN_ERROR.getValue(), user);
+            } else {
+                return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.SUCCESS_CODE, StatusType.LOGIN_SUCCESS.getValue(), user);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseDataUtils.getInstance().<User>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.WEB_ERROR.getValue(), user);
+        }
+    }
+
 }

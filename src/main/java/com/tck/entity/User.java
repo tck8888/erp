@@ -12,6 +12,9 @@ public class User implements Serializable {
     private String password;
     private String email;
     private String avatar;
+    private String nickName;
+
+
 
     public Integer getId() {
         return id;
@@ -51,5 +54,13 @@ public class User implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 }

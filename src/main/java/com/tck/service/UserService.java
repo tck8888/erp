@@ -11,4 +11,7 @@ public interface UserService {
 
     BaseData<String> register(String username, String password);
 
+    BaseData<String> update(int userId,String name, String type);
+
+    BaseData<User> findUserById(Integer userId);
 }
