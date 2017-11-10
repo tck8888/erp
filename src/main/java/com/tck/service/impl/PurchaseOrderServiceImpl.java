@@ -57,11 +57,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public BaseData<PurchaseOrder> findOrderByproductId(Integer productId) {
+    public BaseData<PurchaseOrder> findOrderByproductId(Integer userId) {
 
         PurchaseOrder purchaseOrder = null;
         try {
-            purchaseOrder = purchaseOrderMapper.findOrderByproductId(productId);
+            purchaseOrder = purchaseOrderMapper.findOrderByproductId(userId);
             return BaseDataUtils.getInstance().<PurchaseOrder>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), purchaseOrder);
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,8 +184,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
      * @return
      */
     public boolean updateAccountMoney(AccountBean account, double price) {
+        Double balance = account.getBalance();
+        if (balance == null) {
+            balance = 0.00;
+        }
         try {
-            return accountMapper.updateAccountBalance(account.getId(), account.getBalance() - price);
+            return accountMapper.updateAccountBalance(account.getId(), balance - price);
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

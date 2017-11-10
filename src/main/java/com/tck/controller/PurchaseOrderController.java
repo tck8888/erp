@@ -19,38 +19,6 @@ public class PurchaseOrderController {
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
-
-   /* *//*
-    *    private int userId;
-    private int accountId;
-    private int warehouseId;
-    private int totalCount;
-    private double totalprice;
-    private String productId;
-    private String productCount;
-    private String date;
-    private String remark;*//*
-    @RequestMapping("/addOrder")
-    public BaseData<String> addOrder(@RequestParam("productId") Integer productId,
-                                     @RequestParam("userId") Integer userId,
-                                     @RequestParam("warehouseId") Integer warehouseId,
-                                     @RequestParam("count") Integer count,
-                                     @RequestParam("totalPrice") Double totalPrice,
-                                     @RequestParam("remark") String remark) {
-
-        return purchaseOrderService.addOrder(productId, userId, warehouseId,count,totalPrice, remark);
-    }*/
-
-    /*
-  *    private int userId;
-  private int accountId;
-  private int warehouseId;
-  private int totalCount;
-  private double totalprice;
-  private String productId;
-  private String productCount;
-  private String date;
-  private String remark;*/
     @RequestMapping("/addOrder")
     public BaseData<String> addOrder(@RequestParam("userId") Integer userId,
                                      @RequestParam("warehouseId") Integer warehouseId,

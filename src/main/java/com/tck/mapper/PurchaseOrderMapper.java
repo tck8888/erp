@@ -11,35 +11,38 @@ import java.util.List;
 @Mapper
 public interface PurchaseOrderMapper {
 
-    @Select("select * from tb_purchase_order where user_id = #{userId}")
+    @Select("select * from tb_purchase_order where userId = #{userId}")
     @Results({
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "productId", column = "product_id"),
-            @Result(property = "warehouseId", column = "warehouse_id"),
-            @Result(property = "count", column = "count"),
-            @Result(property = "totalPrice", column = "total_price"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "productId", column = "productId"),
+            @Result(property = "warehouseId", column = "warehouseId"),
+            @Result(property = "totalCount", column = "totalCount"),
+            @Result(property = "totalPrice", column = "totalPrice"),
+            @Result(property = "date", column = "date"),
             @Result(property = "remark", column = "remark")
     })
     List<PurchaseOrder> findOrderByUserId(@Param("userId") Integer userId);
 
     @Select("select * from tb_purchase_order where id = #{id}")
     @Results({
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "productId", column = "product_id"),
-            @Result(property = "warehouseId", column = "warehouse_id"),
-            @Result(property = "count", column = "count"),
-            @Result(property = "totalPrice", column = "total_price"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "productId", column = "productId"),
+            @Result(property = "warehouseId", column = "warehouseId"),
+            @Result(property = "totalCount", column = "totalCount"),
+            @Result(property = "totalPrice", column = "totalPrice"),
+            @Result(property = "date", column = "date"),
             @Result(property = "remark", column = "remark")
     })
     PurchaseOrder findOrderByproductId(@Param("id") Integer id);
 
-    @Update("update tb_purchase_order set count=#{count},remark=#{remark} where id = #{id}")
+    @Update("update tb_purchase_order set totalCount=#{totalCount},remark=#{remark} where id = #{id}")
     @Results({
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "productId", column = "product_id"),
-            @Result(property = "warehouseId", column = "warehouse_id"),
-            @Result(property = "count", column = "count"),
-            @Result(property = "totalPrice", column = "total_price"),
+            @Result(property = "userId", column = "userId"),
+            @Result(property = "productId", column = "productId"),
+            @Result(property = "warehouseId", column = "warehouseId"),
+            @Result(property = "totalCount", column = "totalCount"),
+            @Result(property = "totalPrice", column = "totalPrice"),
+            @Result(property = "date", column = "date"),
             @Result(property = "remark", column = "remark")
     })
     Integer updateOrderByProductId(@Param("id") Integer id,

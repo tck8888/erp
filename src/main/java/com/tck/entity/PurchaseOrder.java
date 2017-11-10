@@ -9,7 +9,8 @@ public class PurchaseOrder {
     private Integer userId;
     private Integer productId;
     private Integer warehouseId;
-    private Integer count;
+    private Integer totalCount;
+    private String date;
     private String remark;
     private Double totalPrice;
 
@@ -53,12 +54,21 @@ public class PurchaseOrder {
         this.warehouseId = warehouseId;
     }
 
-    public Integer getCount() {
-        return count;
+
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getRemark() {

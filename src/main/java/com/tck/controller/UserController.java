@@ -31,7 +31,8 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public BaseData<String> register(@RequestParam("username") java.lang.String username, @RequestParam("password") java.lang.String password) {
+    @ResponseBody
+    public BaseData<String> register(@RequestParam("username") String username, @RequestParam("password") String password) {
         return userService.register(username, password);
     }
 
