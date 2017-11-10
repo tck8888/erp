@@ -5,14 +5,10 @@ import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
 import com.tck.entity.AccountBean;
-import com.tck.entity.Product;
 import com.tck.entity.ProductInWarehouseCount;
 import com.tck.entity.PurchaseOrder;
-import com.tck.mapper.AccountMapper;
-import com.tck.mapper.ConsumeRecordMapper;
-import com.tck.mapper.ProductInWarehouseCountMapper;
-import com.tck.mapper.PurchaseOrderMapper;
-import com.tck.service.PurchaseOrderService;
+import com.tck.mapper.*;
+import com.tck.service.SaleOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,10 +19,10 @@ import java.util.List;
  * Created by tck on 2017/7/13.
  */
 @Service
-public class PurchaseOrderServiceImpl implements PurchaseOrderService {
+public class SaleOrderServiceImpl implements SaleOrderService {
 
     @Autowired
-    private PurchaseOrderMapper purchaseOrderMapper;
+    private SaleOrderMapper saleOrderMapper;
     @Autowired
     private ProductInWarehouseCountMapper productInWarehouseCountMapper;
     @Autowired
@@ -40,7 +36,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public BaseData<List<PurchaseOrder>> findOrderByUserId(Integer userId) {
         List<PurchaseOrder> purchaseOrderList = null;
         try {
-            purchaseOrderList = purchaseOrderMapper.findOrderByUserId(userId);
+            purchaseOrderList = saleOrderMapper.findOrderByUserId(userId);
             return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), purchaseOrderList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +57,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
         PurchaseOrder purchaseOrder = null;
         try {
-            purchaseOrder = purchaseOrderMapper.findOrderByproductId(userId);
+            purchaseOrder = saleOrderMapper.findOrderByproductId(userId);
             return BaseDataUtils.getInstance().<PurchaseOrder>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), purchaseOrder);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,7 +71,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public BaseData<String> updateOrderByProductId(Integer productId, Integer count, String remark) {
 
         try {
-            Integer isSucess = purchaseOrderMapper.updateOrderByProductId(productId, count, remark);
+            Integer isSucess = saleOrderMapper.updateOrderByProductId(productId, count, remark);
             if (isSucess > 0) {
                 return BaseDataUtils.getInstance().<String>getBaseData(StatusCode.SUCCESS_CODE, StatusType.UPDATE_SUCCESS.getValue(), StatusType.UPDATE_SUCCESS.getValue());
             } else {
@@ -95,9 +91,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                                      Double totalPrice, String productId, String productCount,
                                      String date, String remark) {
         /**
-         * 先判断tb_warehouse_product_count里面有没有当前productId和warehouseId
-         * 如果没有的话，就是新增一条记录
-         * 否则，在原有的记录上修改一下数量
+         * 修改tb_warehouse_product_count里面的商品数量
          */
         boolean isSuccess = false;
         if (productId.indexOf(",") == -1) {
@@ -143,7 +137,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                                         Double totalPrice, String productId, String productCount,
                                         String date, String remark) {
         try {
-            return purchaseOrderMapper.addOrder(userId, warehouseId, warehouseName,
+            return saleOrderMapper.addOrder(userId, warehouseId, warehouseName,
                     accountId, accountName, totalCount,
                     totalPrice, productId, productCount,
                     date, remark);
@@ -189,7 +183,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             balance = 0.00;
         }
         try {
-            return accountMapper.updateAccountBalance(account.getId(), balance - price);
+            return accountMapper.updateAccountBalance(account.getId(), balance + price);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,8 +207,12 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 return productInWarehouseCountMapper.addProductInWarehouseCount(productCount, warehouseId, productCount);
             } else {
                 Integer count = productInWarehouseCount.getCount();
-                //查到当前数据库有记录，则更新数据
-                return productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, count+productCount) > 0 ? true : false;
+                //查到当前数据库有记录，则更新数据 为0则删除这一行 ，否则减少数量和
+                if (productCount - count != 0) {
+                    return productInWarehouseCountMapper.updateProductInWarehouseCount(productId, warehouseId, count - productCount) > 0 ? true : false;
+                } else {
+                    return productInWarehouseCountMapper.deleteProductInWarehouseCount(productId, warehouseId) > 0 ? true : false;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,6 +11,8 @@ public class Product {
     private String remark;
     private Integer userId;
 
+    private Integer stock;
+
     public Integer getId() {
         return id;
     }
@@ -57,6 +59,14 @@ public class Product {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public Integer getStock() {
+        return stock;
     }
 
     @Override

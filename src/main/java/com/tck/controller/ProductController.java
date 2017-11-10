@@ -24,27 +24,33 @@ public class ProductController {
         return productService.findProductByUserId(userId);
     }
 
+    @RequestMapping(value = "/findAllByStock", method = RequestMethod.GET)//warehouseId
+    public BaseData<List<Product>> findAllByStock(@RequestParam("userId") Integer userId,
+                                                  @RequestParam("warehouseId") Integer warehouseId) {
+        return productService.findAllByStock(userId, warehouseId);
+    }
+
+
     @RequestMapping(value = "/addProduct", method = RequestMethod.GET)
     public BaseData<String> addProduct(@RequestParam("productName") String productName,
-                                @RequestParam("productPrice") Double productPrice,
-                                @RequestParam("productImage") String productImage,
-                                @RequestParam("remark") String remark,
-                                @RequestParam("userId") Integer userId) {
-        return productService.addProduct(productName,productPrice,productImage,remark,userId);
+                                       @RequestParam("productPrice") Double productPrice,
+                                       @RequestParam("productImage") String productImage,
+                                       @RequestParam("remark") String remark,
+                                       @RequestParam("userId") Integer userId) {
+        return productService.addProduct(productName, productPrice, productImage, remark, userId);
     }
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.GET)
     public BaseData<String> updateProduct(@RequestParam("productName") String productName,
-                                       @RequestParam("productPrice") Double productPrice,
-                                       @RequestParam("productImage") String productImage,
-                                       @RequestParam("remark") String remark,
-                                       @RequestParam("productId") Integer productId) {
-        return productService.updateProduct(productName,productPrice,productImage,remark,productId);
+                                          @RequestParam("productPrice") Double productPrice,
+                                          @RequestParam("productImage") String productImage,
+                                          @RequestParam("remark") String remark,
+                                          @RequestParam("productId") Integer productId) {
+        return productService.updateProduct(productName, productPrice, productImage, remark, productId);
     }
 
     @RequestMapping(value = "/findProductById", method = RequestMethod.GET)
     public BaseData<Product> findProductById(@RequestParam("id") Integer id) {
         return productService.findProductById(id);
     }
-
 }

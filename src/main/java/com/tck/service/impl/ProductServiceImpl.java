@@ -5,11 +5,14 @@ import com.tck.base.BaseDataUtils;
 import com.tck.base.StatusCode;
 import com.tck.base.StatusType;
 import com.tck.entity.Product;
+import com.tck.entity.ProductInWarehouseCount;
+import com.tck.mapper.ProductInWarehouseCountMapper;
 import com.tck.mapper.ProductMapper;
 import com.tck.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +23,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductMapper productMapper;
+
+    @Autowired
+    private ProductInWarehouseCountMapper productInWarehouseCountMapper;
 
     @Override
     public BaseData<String> addProduct(String productName, Double productPrice, String productImage, String remark, Integer userId) {
@@ -73,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = null;
         try {
             product = productMapper.findProductById(id);
-            return  BaseDataUtils.getInstance().<Product>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), product);
+            return BaseDataUtils.getInstance().<Product>getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), product);
         } catch (Exception e) {
             e.printStackTrace();
             return BaseDataUtils.getInstance().<Product>getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), product);
@@ -86,6 +92,43 @@ public class ProductServiceImpl implements ProductService {
         try {
             productByUserId = productMapper.findProductByUserId(userId);
             return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), productByUserId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), productByUserId);
+        }
+    }
+
+    /**
+     * 查询有库存的商品
+     *
+     * @param userId
+     * @param warehouseId
+     * @return
+     */
+    @Override
+    public BaseData<List<Product>> findAllByStock(int userId, int warehouseId) {
+        List<Product> productByUserId = null;
+        try {
+            List<ProductInWarehouseCount> productWithStock = productInWarehouseCountMapper.getProductWithStock(warehouseId);
+            //仓库没有库存数据
+            if (productWithStock == null || productWithStock.isEmpty()) {
+                return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), productByUserId);
+            }
+            productByUserId = productMapper.findProductByUserId(userId);
+            //查询所有的商品库数据
+            if (productByUserId == null || productByUserId.isEmpty()) {
+                return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), productByUserId);
+            }
+            List<Product> mProductList = new ArrayList<>();
+            for (int i = 0; i < productByUserId.size(); i++) {
+                for (int j = 0; j < productWithStock.size(); j++) {
+                    if (productByUserId.get(i).getId() == productWithStock.get(j).getProductId()) {
+                        productByUserId.get(i).setStock(productWithStock.get(j).getCount());
+                        mProductList.add(productByUserId.get(i));
+                    }
+                }
+            }
+            return getBaseData(StatusCode.SUCCESS_CODE, StatusType.SELECT_SUCCESS.getValue(), mProductList);
         } catch (Exception e) {
             e.printStackTrace();
             return getBaseData(StatusCode.WEB_ERROR_CODE, StatusType.SELECT_ERROR.getValue(), productByUserId);
