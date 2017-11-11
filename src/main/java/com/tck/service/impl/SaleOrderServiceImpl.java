@@ -204,7 +204,7 @@ public class SaleOrderServiceImpl implements SaleOrderService {
             ProductInWarehouseCount productInWarehouseCount = productInWarehouseCountMapper.getProductInWarehouseCount(productId, warehouseId);
             if (productInWarehouseCount == null) {
                 //没有查到,保存
-                return productInWarehouseCountMapper.addProductInWarehouseCount(productCount, warehouseId, productCount);
+                return productInWarehouseCountMapper.addProductInWarehouseCount(productId, warehouseId, productCount);
             } else {
                 Integer count = productInWarehouseCount.getCount();
                 //查到当前数据库有记录，则更新数据 为0则删除这一行 ，否则减少数量和
